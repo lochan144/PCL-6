@@ -12,8 +12,8 @@ const cors    = require('cors');
 const fs      = require('fs');
 
 const app  = express();
-const PORT = 3000;
-const JWT_SECRET = 'farmlink_secure_jwt_secret_2024_pcl6';
+const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'farmlink_secure_jwt_secret_2024_pcl6';
 
 // ── Create database directory if it doesn't exist ──────────
 if (!fs.existsSync('./database')) {
@@ -340,9 +340,6 @@ app.get('*', (req, res) => {
 
 // ── Start Server ────────────────────────────────────────────
 app.listen(PORT, () => {
-  console.log('\n🌾 ─────────────────────────────────────');
-  console.log('   FarmLink Server is Running!');
-  console.log(`   🚀  http://localhost:${PORT}`);
-  console.log('   📁  Database: ./database/farmlink.db');
-  console.log('🌾 ─────────────────────────────────────\n');
+  console.log(`Server running on port ${PORT}`);
+  console.log('📁  Database: ./database/farmlink.db');
 });
