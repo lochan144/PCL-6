@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer Dashboard — FarmLink</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>" />
+</head>
+<body class="dashboard-page">
+
+  <!-- ── Dashboard Navbar ────────────────────────────────── -->
+  <nav class="navbar dashboard-nav">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        FarmLink
+      </a>
+      <div class="navbar-menu" id="navMenu">
+        <span class="nav-link">
+          <span id="navUserName">Loading…</span>
+          &nbsp;<span class="badge-pill badge-farmer-type"><i class="fa-solid fa-tractor"></i> Farmer</span>
+        </span>
+        <button class="logout-btn" onclick="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+      <button class="navbar-toggle" id="navToggle"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </nav>
+
+  <!-- ── Dashboard Header ────────────────────────────────── -->
+  <div class="dashboard-header">
+    <div class="container">
+      <div class="welcome-info">
+        <div class="avatar avatar-farmer" id="userAvatar">?</div>
+        <div class="welcome-text">
+          <h2 id="welcomeName">Welcome back!</h2>
+          <p id="welcomeMeta">Loading your profile…</p>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="header-stat">
+          <div class="stat-val" id="statMyCrops">—</div>
+          <div class="stat-lbl">My Crops Posted</div>
+        </div>
+        <div class="header-stat">
+          <div class="stat-val" id="statVendorProducts">—</div>
+          <div class="stat-lbl">Vendor Products</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tabs ──────────────────────────────────────────────── -->
+  <div class="dashboard-tabs">
+    <div class="container">
+      <button class="tab-btn active" id="tabSell" onclick="switchTab('sell')">
+        <i class="fa-solid fa-wheat-awn"></i> Sell My Crops
+        <span class="tab-count" id="countMyCrops">0</span>
+      </button>
+      <button class="tab-btn" id="tabBuy" onclick="switchTab('buy')">
+        <i class="fa-solid fa-cart-shopping"></i> Buy Farming Supplies
+        <span class="tab-count" id="countProducts">0</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Dashboard Content ───────────────────────────────── -->
+  <div class="dashboard-content">
+    <div class="container">
+
+      <!-- ════════════════════════════════════════════════
+           TAB 1: SELL MY CROPS
+           ════════════════════════════════════════════════ -->
+      <div class="tab-panel active" id="panel-sell">
+
+        <div class="panel-header">
+          <div class="panel-title">
+            <h3><i class="fa-solid fa-wheat-awn"></i> My Crop Listings</h3>
+            <p>Post crops for sale and manage your existing listings</p>
+          </div>
+          <button class="btn btn-primary" id="togglePostCropBtn" onclick="togglePostForm('cropForm')">
+            <i class="fa-solid fa-plus"></i> Post New Crop
+          </button>
+        </div>
+
+        <!-- Post Crop Form -->
+        <div class="post-form-wrap" id="cropForm">
+          <div class="post-form-header">
+            <div>
+              <h4><i class="fa-solid fa-wheat-awn"></i> Post a Crop for Sale</h4>
+              <p>Fill in your crop details. Vendors will contact you directly.</p>
+            </div>
+            <button class="post-form-close" onclick="togglePostForm('cropForm')">✕</button>
+          </div>
+          <div class="post-form-body">
+            <form id="postCropForm" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="cropName">
+                    Crop Name <span class="req">*</span>
+                  </label>
+                  <select id="cropName" class="form-control" required>
+                    <option value="">— Select Crop —</option>
+                    <option>Wheat</option>
+                    <option>Rice / Paddy</option>
+                    <option>Maize / Corn</option>
+                    <option>Sugarcane</option>
+                    <option>Cotton</option>
+                    <option>Soybean</option>
+                    <option>Groundnut</option>
+                    <option>Onion</option>
+                    <option>Tomato</option>
+                    <option>Potato</option>
+                    <option>Chilli</option>
+                    <option>Garlic</option>
+                    <option>Turmeric</option>
+                    <option>Ginger</option>
+                    <option>Mango</option>
+                    <option>Banana</option>
+                    <option>Grapes</option>
+                    <option>Pomegranate</option>
+                    <option>Lentils (Dal)</option>
+                    <option>Chickpea (Chana)</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cropNameCustom">
+                    Custom Crop Name <span style="color:var(--text-light); font-weight:400">(if Other)</span>
+                  </label>
+                  <input type="text" id="cropNameCustom" class="form-control" placeholder="Type crop name here" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="quantity">
+                    Quantity Available <span class="req">*</span>
+                  </label>
+                  <input type="text" id="quantity" class="form-control" placeholder="e.g. 500 kg, 2 tonnes" required maxlength="50" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="pricePerKg">
+                    Price per kg (₹) <span class="req">*</span>
+                  </label>
+                  <input type="number" id="pricePerKg" class="form-control" placeholder="e.g. 25" min="0.1" step="0.1" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="cropLocation">
+                    Location <span class="req">*</span>
+                  </label>
+                  <input type="text" id="cropLocation" class="form-control" placeholder="e.g. Nashik, Maharashtra" required maxlength="100" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cropPhone">
+                    Contact Phone <span class="req">*</span>
+                  </label>
+                  <input type="tel" id="cropPhone" class="form-control" placeholder="Your contact number" maxlength="15" required />
+                </div>
+              </div>
+              <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+                <button type="submit" class="btn btn-primary" id="submitCropBtn">
+                  <i class="fa-solid fa-wheat-awn"></i> Post Crop
+                </button>
+                <button type="button" class="btn btn-outline" onclick="togglePostForm('cropForm')">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- My Crops List -->
+        <div id="myCropsContainer">
+          <div class="loading-wrap">
+            <div class="spinner"></div>
+            <p>Loading your crops…</p>
+          </div>
+        </div>
+
+      </div><!-- /panel-sell -->
+
+
+      <!-- ════════════════════════════════════════════════
+           TAB 2: BUY FARMING SUPPLIES
+           ════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-buy">
+
+        <div class="panel-header">
+          <div class="panel-title">
+            <h3><i class="fa-solid fa-cart-shopping"></i> Farming Supplies from Vendors</h3>
+            <p>Browse seeds, fertilizers, and farming equipment from vendors near you</p>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <input type="text" id="productSearchInput" class="form-control" placeholder="Search products…"
+              style="width:220px;" oninput="filterProducts()" />
+            <button class="btn btn-outline btn-sm" onclick="loadVendorProducts()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+          </div>
+        </div>
+
+        <!-- Products List -->
+        <div id="vendorProductsContainer">
+          <div class="loading-wrap">
+            <div class="spinner"></div>
+            <p>Loading vendor products…</p>
+          </div>
+        </div>
+
+      </div><!-- /panel-buy -->
+
+    </div>
+  </div>
+
+  <!-- ── Toast Container ────────────────────────────────────── -->
+  <div id="toast-container"></div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/farmer.js"></script>
+</body>
+</html>

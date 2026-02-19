@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — FarmLink</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>" />
+</head>
+<body class="auth-page">
+
+  <!-- ── Navbar ──────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        FarmLink
+      </a>
+      <div class="navbar-menu" id="navMenu">
+        <a href="index.html"    class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="login.html"    class="nav-link"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+        <a href="register.html" class="nav-link active btn-nav"><i class="fa-solid fa-user-plus"></i> Register</a>
+      </div>
+      <button class="navbar-toggle" id="navToggle"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </nav>
+
+  <!-- ── Auth Hero ─────────────────────────────────────────── -->
+  <div class="auth-hero">
+    <div class="hero-emoji"><i class="fa-solid fa-user-plus"></i></div>
+    <h2>Create Your Account</h2>
+    <p>Join FarmLink as a Farmer or Vendor — it's completely free!</p>
+  </div>
+
+  <!-- ── Register Card ─────────────────────────────────────── -->
+  <div class="auth-container">
+    <div class="auth-card" style="max-width: 520px;">
+
+      <div class="auth-card-header">
+        <div class="auth-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        <h2>Join FarmLink</h2>
+        <p>Fill in your details to get started</p>
+      </div>
+
+      <!-- Error / Success Alert -->
+      <div id="regAlert" class="alert d-none" role="alert">
+        <span id="regAlertIcon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <span id="regAlertMsg"></span>
+      </div>
+
+      <form id="registerForm" novalidate>
+
+        <!-- Full Name -->
+        <div class="form-group">
+          <label class="form-label" for="full_name">
+            Full Name <span class="req">*</span>
+          </label>
+          <div class="input-icon-wrap">
+            <span class="input-icon"><i class="fa-solid fa-user"></i></span>
+            <input
+              type="text"
+              id="full_name"
+              name="full_name"
+              class="form-control"
+              placeholder="Enter your full name"
+              maxlength="80"
+              required
+              autocomplete="name"
+            />
+          </div>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group">
+          <label class="form-label" for="phone">
+            Phone Number <span class="req">*</span>
+          </label>
+          <div class="input-icon-wrap">
+            <span class="input-icon"><i class="fa-solid fa-phone"></i></span>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              class="form-control"
+              placeholder="10-digit mobile number"
+              maxlength="15"
+              required
+              autocomplete="tel"
+            />
+          </div>
+          <p class="form-hint"><i class="fa-solid fa-circle-info"></i> This will be your login username. Use a number you own.</p>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+          <label class="form-label" for="location">
+            Location <span class="req">*</span>
+          </label>
+          <div class="input-icon-wrap">
+            <span class="input-icon"><i class="fa-solid fa-location-dot"></i></span>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              class="form-control"
+              placeholder="e.g. Nashik, Maharashtra"
+              maxlength="100"
+              required
+              autocomplete="address-level2"
+            />
+          </div>
+        </div>
+
+        <!-- User Type -->
+        <div class="form-group">
+          <label class="form-label">
+            I am a... <span class="req">*</span>
+          </label>
+          <div class="user-type-group">
+            <div class="user-type-option">
+              <input type="radio" name="user_type" id="typeFarmer" value="farmer" checked />
+              <label class="user-type-label" for="typeFarmer">
+                <span class="type-icon"><i class="fa-solid fa-tractor"></i></span>
+                Farmer
+              </label>
+            </div>
+            <div class="user-type-option">
+              <input type="radio" name="user_type" id="typeVendor" value="vendor" />
+              <label class="user-type-label" for="typeVendor">
+                <span class="type-icon"><i class="fa-solid fa-store"></i></span>
+                Vendor
+              </label>
+            </div>
+          </div>
+          <p class="form-hint" id="typeHint">As a Farmer: Post crops for sale &amp; buy farming supplies from vendors.</p>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label class="form-label" for="password">
+            Password <span class="req">*</span>
+          </label>
+          <div class="input-icon-wrap">
+            <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Minimum 6 characters"
+              minlength="6"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label class="form-label" for="confirm_password">
+            Confirm Password <span class="req">*</span>
+          </label>
+          <div class="input-icon-wrap">
+            <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              class="form-control"
+              placeholder="Re-enter your password"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="registerBtn">
+          <i class="fa-solid fa-user-plus"></i> Create Account
+        </button>
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <div class="auth-footer-link">
+        Already have an account?
+        <a href="login.html">Login here →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script>
+    // ── Redirect if already logged in ─────────────────────
+    (function () {
+      const user  = getUser();
+      const token = getToken();
+      if (token && user) {
+        window.location.replace(user.user_type === 'farmer' ? 'farmer-dashboard.html' : 'vendor-dashboard.html');
+      }
+
+      // Pre-select user type from URL param
+      const params = new URLSearchParams(window.location.search);
+      const type   = params.get('type');
+      if (type === 'vendor') {
+        document.getElementById('typeVendor').checked = true;
+        updateTypeHint('vendor');
+      }
+    })();
+
+    // ── Type hint update ──────────────────────────────────
+    function updateTypeHint(type) {
+      const hint = document.getElementById('typeHint');
+      if (type === 'farmer') {
+        hint.textContent = 'As a Farmer: Post crops for sale & buy farming supplies from vendors.';
+      } else {
+        hint.textContent = 'As a Vendor: Sell seeds, fertilizers, supplies & buy crops from farmers.';
+      }
+    }
+
+    document.querySelectorAll('input[name="user_type"]').forEach(radio => {
+      radio.addEventListener('change', () => updateTypeHint(radio.value));
+    });
+
+    // ── Register Form Submit ──────────────────────────────
+    document.getElementById('registerForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const full_name       = document.getElementById('full_name').value.trim();
+      const phone           = document.getElementById('phone').value.trim();
+      const location        = document.getElementById('location').value.trim();
+      const user_type       = document.querySelector('input[name="user_type"]:checked').value;
+      const password        = document.getElementById('password').value;
+      const confirm_password = document.getElementById('confirm_password').value;
+
+      const alertDiv  = document.getElementById('regAlert');
+      const alertIcon = document.getElementById('regAlertIcon');
+      const alertMsg  = document.getElementById('regAlertMsg');
+      const btn       = document.getElementById('registerBtn');
+
+      const showAlert = (msg, type) => {
+        alertDiv.className = `alert alert-${type}`;
+        alertIcon.innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-triangle-exclamation"></i>';
+        alertMsg.textContent = msg;
+        alertDiv.classList.remove('d-none');
+      };
+
+      alertDiv.classList.add('d-none');
+
+      // Client-side validation
+      if (!full_name || !phone || !location || !user_type || !password) {
+        return showAlert('Please fill in all required fields.', 'error');
+      }
+      if (!/^\d{10,15}$/.test(phone)) {
+        return showAlert('Enter a valid phone number (10-15 digits, numbers only).', 'error');
+      }
+      if (password.length < 6) {
+        return showAlert('Password must be at least 6 characters.', 'error');
+      }
+      if (password !== confirm_password) {
+        return showAlert('Passwords do not match. Please re-enter.', 'error');
+      }
+
+      setButtonLoading(btn, true);
+
+      const result = await apiRequest('/register', 'POST', { full_name, phone, location, user_type, password });
+
+      setButtonLoading(btn, false, '<i class="fa-solid fa-user-plus"></i> Create Account');
+
+      if (!result || !result.ok) {
+        return showAlert(result?.data?.error || 'Registration failed. Please try again.', 'error');
+      }
+
+      showAlert('Registration successful! Redirecting to login...', 'success');
+      showToast('Account created successfully!', 'success');
+
+      setTimeout(() => {
+        window.location.href = `login.html?type=${user_type}`;
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

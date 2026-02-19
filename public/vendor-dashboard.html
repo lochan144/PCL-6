@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vendor Dashboard — FarmLink</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>" />
+</head>
+<body class="dashboard-page">
+
+  <!-- ── Dashboard Navbar ────────────────────────────────── -->
+  <nav class="navbar dashboard-nav">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        FarmLink
+      </a>
+      <div class="navbar-menu" id="navMenu">
+        <span class="nav-link">
+          <span id="navUserName">Loading…</span>
+          &nbsp;<span class="badge-pill badge-vendor-type"><i class="fa-solid fa-store"></i> Vendor</span>
+        </span>
+        <button class="logout-btn" onclick="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+      <button class="navbar-toggle" id="navToggle"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </nav>
+
+  <!-- ── Dashboard Header ────────────────────────────────── -->
+  <div class="dashboard-header">
+    <div class="container">
+      <div class="welcome-info">
+        <div class="avatar avatar-vendor" id="userAvatar">?</div>
+        <div class="welcome-text">
+          <h2 id="welcomeName">Welcome back!</h2>
+          <p id="welcomeMeta">Loading your profile…</p>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="header-stat">
+          <div class="stat-val" id="statMyProducts">—</div>
+          <div class="stat-lbl">My Products Listed</div>
+        </div>
+        <div class="header-stat">
+          <div class="stat-val" id="statFarmerCrops">—</div>
+          <div class="stat-lbl">Available Crops</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tabs ──────────────────────────────────────────────── -->
+  <div class="dashboard-tabs">
+    <div class="container">
+      <button class="tab-btn active" id="tabSell" onclick="switchTab('sell')">
+        <i class="fa-solid fa-store"></i> Sell My Products
+        <span class="tab-count" id="countMyProducts">0</span>
+      </button>
+      <button class="tab-btn" id="tabBuy" onclick="switchTab('buy')">
+        <i class="fa-solid fa-wheat-awn"></i> Buy Crops from Farmers
+        <span class="tab-count" id="countCrops">0</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Dashboard Content ───────────────────────────────── -->
+  <div class="dashboard-content">
+    <div class="container">
+
+      <!-- ════════════════════════════════════════════════
+           TAB 1: SELL MY PRODUCTS
+           ════════════════════════════════════════════════ -->
+      <div class="tab-panel active" id="panel-sell">
+
+        <div class="panel-header">
+          <div class="panel-title">
+            <h3><i class="fa-solid fa-store"></i> My Product Listings</h3>
+            <p>Post farming supplies and manage your store listings</p>
+          </div>
+          <button class="btn btn-primary" id="togglePostProductBtn" onclick="togglePostForm('productForm')">
+            <i class="fa-solid fa-plus"></i> Post New Product
+          </button>
+        </div>
+
+        <!-- Post Product Form -->
+        <div class="post-form-wrap" id="productForm">
+          <div class="post-form-header">
+            <div>
+              <h4><i class="fa-solid fa-store"></i> Post a Product for Sale</h4>
+              <p>Farmers browsing FarmLink will see your listing and contact you directly.</p>
+            </div>
+            <button class="post-form-close" onclick="togglePostForm('productForm')">✕</button>
+          </div>
+          <div class="post-form-body">
+            <form id="postProductForm" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="productCategory">
+                    Product Category <span class="req">*</span>
+                  </label>
+                  <select id="productCategory" class="form-control" onchange="updateProductNames()">
+                    <option value="">— Select Category —</option>
+                    <option value="seeds">Seeds</option>
+                    <option value="fertilizer">Fertilizers</option>
+                    <option value="pesticide">Pesticides / Herbicides</option>
+                    <option value="tools">Farm Tools & Equipment</option>
+                    <option value="irrigation">Irrigation Supplies</option>
+                    <option value="organic">Organic Products</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="productName">
+                    Product Name <span class="req">*</span>
+                  </label>
+                  <input type="text" id="productName" class="form-control" placeholder="e.g. Hybrid Tomato Seeds, DAP Fertilizer" required maxlength="120" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="productPrice">
+                    Price (₹) <span class="req">*</span>
+                  </label>
+                  <input type="number" id="productPrice" class="form-control" placeholder="Price in rupees" min="0.1" step="0.1" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="productUnit">
+                    Price Unit
+                  </label>
+                  <select id="productUnit" class="form-control">
+                    <option value="per kg">per kg</option>
+                    <option value="per bag">per bag</option>
+                    <option value="per packet">per packet</option>
+                    <option value="per litre">per litre</option>
+                    <option value="per unit">per unit</option>
+                    <option value="per set">per set</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="productDescription">
+                  Description
+                </label>
+                <textarea id="productDescription" class="form-control" placeholder="Describe your product — brand, quantity, benefits, usage instructions…" rows="3" maxlength="500"></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="productLocation">
+                    Location <span class="req">*</span>
+                  </label>
+                  <input type="text" id="productLocation" class="form-control" placeholder="e.g. Pune, Maharashtra" required maxlength="100" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="productPhone">
+                    Contact Phone <span class="req">*</span>
+                  </label>
+                  <input type="tel" id="productPhone" class="form-control" placeholder="Your contact number" maxlength="15" required />
+                </div>
+              </div>
+              <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+                <button type="submit" class="btn btn-primary" id="submitProductBtn">
+                  <i class="fa-solid fa-store"></i> Post Product
+                </button>
+                <button type="button" class="btn btn-outline" onclick="togglePostForm('productForm')">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- My Products List -->
+        <div id="myProductsContainer">
+          <div class="loading-wrap">
+            <div class="spinner"></div>
+            <p>Loading your products…</p>
+          </div>
+        </div>
+
+      </div><!-- /panel-sell -->
+
+
+      <!-- ════════════════════════════════════════════════
+           TAB 2: BUY CROPS
+           ════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-buy">
+
+        <div class="panel-header">
+          <div class="panel-title">
+            <h3><i class="fa-solid fa-wheat-awn"></i> Available Crops from Farmers</h3>
+            <p>Browse fresh crops listed by farmers. Contact them directly via WhatsApp or call.</p>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <input type="text" id="cropSearchInput" class="form-control" placeholder="Search crops…"
+              style="width:220px;" oninput="filterCrops()" />
+            <button class="btn btn-outline btn-sm" onclick="loadFarmerCrops()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+          </div>
+        </div>
+
+        <!-- Crops List -->
+        <div id="farmerCropsContainer">
+          <div class="loading-wrap">
+            <div class="spinner"></div>
+            <p>Loading farmer crops…</p>
+          </div>
+        </div>
+
+      </div><!-- /panel-buy -->
+
+    </div>
+  </div>
+
+  <!-- ── Toast Container ────────────────────────────────────── -->
+  <div id="toast-container"></div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/vendor.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — FarmLink</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>" />
+</head>
+<body class="auth-page">
+
+  <!-- ── Navbar ──────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        FarmLink
+      </a>
+      <div class="navbar-menu" id="navMenu">
+        <a href="index.html"    class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="login.html"    class="nav-link active"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+        <a href="register.html" class="nav-link btn-nav"><i class="fa-solid fa-user-plus"></i> Register</a>
+      </div>
+      <button class="navbar-toggle" id="navToggle"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </nav>
+
+  <!-- ── Auth Hero ─────────────────────────────────────────── -->
+  <div class="auth-hero">
+    <div class="hero-emoji"><i class="fa-solid fa-right-to-bracket"></i></div>
+    <h2>Welcome Back!</h2>
+    <p>Login to access your FarmLink dashboard</p>
+  </div>
+
+  <!-- ── Login Card ────────────────────────────────────────── -->
+  <div class="auth-container">
+    <div class="auth-card">
+
+      <div class="auth-card-header">
+        <div class="auth-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        <h2>Login to FarmLink</h2>
+        <p>Enter your phone number and password</p>
+      </div>
+
+      <!-- User Type Quick Select -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;">
+        <button class="quick-type-btn active" id="quickFarmer" onclick="setQuickType('farmer')">
+          <span class="qt-icon"><i class="fa-solid fa-tractor"></i></span>
+          <span style="font-weight:600; font-size:0.9rem">Farmer</span>
+        </button>
+        <button class="quick-type-btn" id="quickVendor" onclick="setQuickType('vendor')">
+          <span class="qt-icon"><i class="fa-solid fa-store"></i></span>
+          <span style="font-weight:600; font-size:0.9rem">Vendor</span>
+        </button>
+      </div>
+
+      <!-- Error Alert -->
+      <div id="loginError" class="alert alert-error d-none" role="alert">
+        <span><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <span id="loginErrorMsg">Invalid credentials.</span>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="phone">
+            Phone Number <span class="req">*</span>
+          </label>
+          <div class="input-icon-wrap">
+            <span class="input-icon"><i class="fa-solid fa-phone"></i></span>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              class="form-control"
+              placeholder="Enter your 10-digit phone number"
+              maxlength="15"
+              required
+              autocomplete="tel"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">
+            Password <span class="req">*</span>
+          </label>
+          <div class="input-icon-wrap">
+            <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter your password"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="loginBtn">
+          <i class="fa-solid fa-right-to-bracket"></i> Login
+        </button>
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <div class="auth-footer-link">
+        Don't have an account?
+        <a href="register.html">Create one here →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <style>
+    .quick-type-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 14px;
+      border: 2px solid #d8f3dc;
+      border-radius: 12px;
+      background: #f6fbf7;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .quick-type-btn.active {
+      border-color: #2d6a4f;
+      background: #edf7f0;
+    }
+    .quick-type-btn:hover { border-color: #52b788; }
+  </style>
+
+  <script src="js/utils.js"></script>
+  <script>
+    // ── Redirect if already logged in ─────────────────────
+    (function () {
+      const user = getUser();
+      const token = getToken();
+      if (token && user) {
+        window.location.replace(user.user_type === 'farmer' ? 'farmer-dashboard.html' : 'vendor-dashboard.html');
+      }
+
+      // Pre-select user type from URL param
+      const params = new URLSearchParams(window.location.search);
+      const type   = params.get('type');
+      if (type === 'vendor') setQuickType('vendor');
+    })();
+
+    let selectedType = 'farmer';
+
+    function setQuickType(type) {
+      selectedType = type;
+      document.getElementById('quickFarmer').classList.toggle('active', type === 'farmer');
+      document.getElementById('quickVendor').classList.toggle('active', type === 'vendor');
+    }
+
+    // ── Login Form Submit ─────────────────────────────────
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const phone    = document.getElementById('phone').value.trim();
+      const password = document.getElementById('password').value;
+      const btn      = document.getElementById('loginBtn');
+      const errDiv   = document.getElementById('loginError');
+      const errMsg   = document.getElementById('loginErrorMsg');
+
+      // Hide previous error
+      errDiv.classList.add('d-none');
+
+      if (!phone || !password) {
+        errMsg.textContent = 'Please fill in all fields.';
+        errDiv.classList.remove('d-none');
+        return;
+      }
+
+      setButtonLoading(btn, true);
+
+      const result = await apiRequest('/login', 'POST', { phone, password });
+
+      setButtonLoading(btn, false, '<i class="fa-solid fa-right-to-bracket"></i> Login');
+
+      if (!result || !result.ok) {
+        errMsg.textContent = result?.data?.error || 'Login failed. Please try again.';
+        errDiv.classList.remove('d-none');
+        return;
+      }
+
+      const { token, user } = result.data;
+      setAuth(token, user);
+
+      showToast(`Welcome back, ${user.full_name}!`, 'success');
+
+      setTimeout(() => {
+        window.location.href = user.user_type === 'farmer' ? 'farmer-dashboard.html' : 'vendor-dashboard.html';
+      }, 700);
+    });
+  </script>
+</body>
+</html>
